@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Cabin Quest — Start</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;max-width:700px;margin:40px auto;padding:0 16px;text-align:center}
+    input,button{padding:12px 14px;font-size:16px;margin-top:10px}
+    .riddle{margin-top:24px;border-top:1px solid #eee;padding-top:20px}
+  </style>
+</head>
+<body>
+  <h1>Welcome to the Cabin Quest</h1>
+  <p>Enter your name to begin the game.</p>
+  <input id="playerName" placeholder="Your name" autocomplete="name" />
+  <br/>
+  <button id="startBtn">Start</button>
+
+  <div id="riddle" class="riddle" style="display:none;">
+    <h2>First Riddle</h2>
+    <p><strong>Find the place where all the garbage goes.</strong></p>
+    <p>When you find it, lift the lid and scan the QR code hidden under the lid.</p>
+    <p style="font-size:0.9em;color:#666">Tip: If you accidentally open the QR with a different phone/browser, you'll be prompted for your name on the win page.</p>
+  </div>
+
+  <script>
+    const startBtn = document.getElementById('startBtn');
+    startBtn.addEventListener('click', () => {
+      const name = document.getElementById('playerName').value.trim();
+      if (!name) { alert('Please enter your name to start!'); return; }
+      localStorage.setItem('playerName', name);
+      document.getElementById('riddle').style.display = 'block';
+      startBtn.disabled = true;
+    });
+  </script>
+</body>
+</html>
