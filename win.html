@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Cabin Quest — Winner</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;max-width:700px;margin:40px auto;padding:0 16px;text-align:center}
+    input,button{padding:10px 12px;font-size:16px;margin-top:10px}
+    .message{margin-top:24px}
+  </style>
+</head>
+<body>
+  <h1>Congratulations!</h1>
+
+  <div id="content" class="message">
+    <p>Loading…</p>
+  </div>
+
+  <script>
+    function showWin(name){
+      const content = document.getElementById('content');
+      content.innerHTML = `<h2>You win ${escapeHtml(name)}! 🎉</h2>
+        <p>Congratulations — enjoy the secret ending.</p>
+        <p><button id="clear">Finish & clear name</button></p>`;
+      document.getElementById('clear').addEventListener('click', ()=>{
+        localStorage.removeItem('playerName');
+        location.reload();
+      });
+    }
+
+    // basic HTML escape
+    function escapeHtml(s){ return (''+s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+    const stored = localStorage.getItem('playerName');
+    if (stored && stored.trim().length){
+      showWin(stored);
+    } else {
+      // fallback: let guest type name manually (useful if they scanned the second QR with a different device)
+      const content = document.getElementById('content');
+      content.innerHTML = `<p>We couldn't find your name on this device. Please enter your name to claim your win:</p>
+        <input id="nameIn" placeholder="Your name" /><br/>
+        <button id="claim">Claim Win</button>`;
+      document.getElementById('claim').addEventListener('click', ()=>{
+        const nm = document.getElementById('nameIn').value.trim();
+        if (!nm) { alert('Please enter a name'); return; }
+        // optionally save so the player can re-open the page without retyping
+        localStorage.setItem('playerName', nm);
+        showWin(nm);
+      });
+    }
+  </script>
+</body>
+</html>
